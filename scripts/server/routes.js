@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const gateway = require('../lib/gateway')
-
+const flash = require('req-flash')
 router.get("/client_token", function (req, res) {
   gateway.clientToken.generate({}, function (err, response) {
     res.send(response.clientToken);
@@ -21,10 +21,11 @@ router.post("/checkout", function (req, res) {
       submitForSettlement: true
     }
   }, function (err, result) {
-      if (result.success) {
-        result.transaction.customFields
+      if (result.success || result.transaction) {
+        res.redirect('checkouts/' + result.transaction.id)
       }
        else {
+        req.flash('error')
         console.error(err)
       }
 

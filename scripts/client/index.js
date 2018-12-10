@@ -1,5 +1,8 @@
 var client = require('braintree-web/client');
+var braintree = require('braintree-web')
 var hostedFields = require('braintree-web/hosted-fields');
+
+//braintree.setup('CLIENT-TOKEN-FROM-SERVER', 'custom', options)
 
 client.create({
   authorization: 'CLIENT_AUTHORIZATION'
@@ -23,6 +26,6 @@ client.create({
       return;
     }
 
-    //use the hosted fields instance here to tokenize a card 
+    //use the hosted fields instance here to tokenize a card
   });
 });

@@ -23,7 +23,22 @@
     <script>
       var form = document.querySelector('#my-sample-form');
       var submit = document.querySelector('input[type="submit"]');
-
+//
+      braintree.setup("CLIENT_AUTHORIZATION", "custom", {
+        id: "my-sample-form",
+        hostedFields: {
+          number: {
+            selector: "#card-number"
+          },
+          cvv: {
+            selector: "#cvv"
+          },
+          expirationDate: {
+            selector: "#expiration-date"
+          }
+        }
+      });
+//
       braintree.client.create({
         authorization: 'CLIENT_AUTHORIZATION'
       }, function (clientErr, clientInstance) {
