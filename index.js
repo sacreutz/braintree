@@ -5,6 +5,7 @@ const port = 3000
 const routes = require('./routes')
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
+app.listen(port, () => console.log(`Listening on port ${port}!`))
 
 app.use('/style', express.static(path.join(__dirname, '/style')))
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')))
@@ -13,19 +14,10 @@ app.use(flash())
 app.use('/', routes)
 
 
-//maybe add code below to routes?
-
-// app.use((err, req, res, next) => {
-//   console.error(err, err.stack)
-//   res.status(500).send(err);
-// })
-
-app.listen(port, () => console.log(`Listening on port ${port}!`))
-
 app.set('views', path.join(__dirname, 'views'));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.set('view engine', 'hbs')
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 
 app.use(function (req, res, next) {
