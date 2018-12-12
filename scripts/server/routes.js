@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const gateway = require('../lib/gateway')
+//const gateway = require('../lib/gateway')
 const flash = require('req-flash')
 const braintree = require('braintree')
 
@@ -66,7 +66,15 @@ router.get('/checkouts/new', function (req, res) {
 });
 
 router.post("/checkouts", function (req, res) {
-  var nonceFromTheClient = req.body.payment_method_nonce;
+  var gateway = braintree.connect({
+    environment: braintree.Environment.Sandbox,
+    // Use your own credentials from the sandbox Control Panel here
+    merchantId: 'ds7p8v5crrrkrygr',
+    publicKey: '8875xvj4dm4zp3gd',
+    privateKey: '845884585fc1a83d3537fbca75ac77ab'
+  });
+
+  var nonceFromTheClient = req.body.paymentMethodNonce;
   var transactionErrors //still need to create this
   var amount = req.body.amount;
   // Use payment method nonce here
@@ -79,6 +87,7 @@ router.post("/checkouts", function (req, res) {
   }, function (err, result) {
       if (result.success || result.transaction) {
         res.redirect('checkouts/' + result.transaction.id)
+        res.send(result);
       }
        else {
         console.error(err)
