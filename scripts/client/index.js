@@ -5,7 +5,7 @@ var hostedFields = require('braintree-web/hosted-fields');
 //braintree.setup('CLIENT-TOKEN-FROM-SERVER', 'custom', options)
 
 client.create({
-  authorization: 'CLIENT_AUTHORIZATION'
+  authorization: 'sandbox_7smphwzv_ds7p8v5crrrkrygr'
 }, function (clientErr, clientInstance) {
 
   if (clientErr) {

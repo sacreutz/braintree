@@ -58,7 +58,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/checkouts/new', function (req, res) {
+router.get('/client_token', function (req, res) {
   var gateway = braintree.connect({
     environment: braintree.Environment.Sandbox,
     // Use your own credentials from the sandbox Control Panel here
@@ -67,15 +67,17 @@ router.get('/checkouts/new', function (req, res) {
     privateKey: '845884585fc1a83d3537fbca75ac77ab'
   });
   gateway.clientToken.generate({}, function (err, response) {
-    res.render('checkouts/new', {clientToken: response.clientToken, messages:
-      req.flash('error')});
+    var clientToken = response.clientToken
+    // res.render('/checkouts/new', {clientToken: response.clientToken, messages:
+    //   req.flash('error')});
+    res.send(response.clientToken)
     if (err) {
       console.error(err)
     }
   });
 });
 
-router.post("/checkouts", function (req, res) {
+router.post("/checkout", function (req, res) {
   var gateway = braintree.connect({
     environment: braintree.Environment.Sandbox,
     merchantId: 'ds7p8v5crrrkrygr',
