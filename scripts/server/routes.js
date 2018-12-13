@@ -51,11 +51,21 @@ function createResultObject(transaction) {
 
 // and these are routes:
 
-router.get('/', function (req, res) {
-  res.redirect('checkouts/new')
-})
+// router.get('/', function (req, res) {
+//   res.redirect('checkouts/new')
+// })
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 
 router.get('/checkouts/new', function (req, res) {
+  var gateway = braintree.connect({
+    environment: braintree.Environment.Sandbox,
+    // Use your own credentials from the sandbox Control Panel here
+    merchantId: 'ds7p8v5crrrkrygr',
+    publicKey: '8875xvj4dm4zp3gd',
+    privateKey: '845884585fc1a83d3537fbca75ac77ab'
+  });
   gateway.clientToken.generate({}, function (err, response) {
     res.render('checkouts/new', {clientToken: response.clientToken, messages:
       req.flash('error')});
@@ -68,7 +78,6 @@ router.get('/checkouts/new', function (req, res) {
 router.post("/checkouts", function (req, res) {
   var gateway = braintree.connect({
     environment: braintree.Environment.Sandbox,
-    // Use your own credentials from the sandbox Control Panel here
     merchantId: 'ds7p8v5crrrkrygr',
     publicKey: '8875xvj4dm4zp3gd',
     privateKey: '845884585fc1a83d3537fbca75ac77ab'
