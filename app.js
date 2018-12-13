@@ -5,7 +5,7 @@ const port = 3000
 const routes = require('./scripts/server/routes')
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
-app.listen(port, () => console.log(`Listening on port ${port}!`))
+//app.listen(port, () => console.log(`Listening on port ${port}!`))
 
 app.use('/style', express.static(path.join(__dirname, '/style')))
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')))

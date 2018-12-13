@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "braintree": "^2.14.0",
     "braintree-web": "^3.40.0",
+    "connect-flash": "^0.1.1",
     "express": "^4.16.4",
     "handlebars": "^4.0.12",
     "hbs": "^4.0.1",
