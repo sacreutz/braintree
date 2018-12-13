@@ -1,4 +1,4 @@
-<div id="dropin-wrapper">
+{{!-- <div id="dropin-wrapper">
   <div id="checkout-message"></div>
   <div id="dropin-container"></div>
   <head>
@@ -23,9 +23,62 @@
     <script src="https://js.braintreegateway.com/web/3.39.0/js/hosted-fields.min.js"></script>
 
   <button id="submit-button">Submit payment</button>
-</div>
+</div> --}}
+
+
+<!-- Bootstrap inspired Braintree Hosted Fields example -->
+<div class="panel panel-default bootstrap-basic">
+  <div class="panel-heading">
+    <h3 class="panel-title">Enter Card Details</h3>
+  </div>
+  <form class="panel-body" id="my-sample-form">
+    <div class="row">
+      <div class="form-group col-sm-8">
+        <label class="control-label">Card Number</label>
+        <!--  Hosted Fields div container -->
+        <div class="form-control" id="card-number"></div>
+        <span class="helper-text"></span>
+      </div>
+      <div class="form-group col-sm-4">
+        <div class="row">
+          <label class="control-label col-xs-12">Expiration Date</label>
+          <div class="col-xs-6">
+            <!--  Hosted Fields div container -->
+            <div class="form-control" id="expiration-month"></div>
+          </div>
+          <div class="col-xs-6">
+            <!--  Hosted Fields div container -->
+            <div class="form-control" id="expiration-year"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label class="control-label">Security Code</label>
+        <!--  Hosted Fields div container -->
+        <div class="form-control" id="cvv"></div>
+      </div>
+      <div class="form-group col-sm-6">
+        <label class="control-label">Zipcode</label>
+        <!--  Hosted Fields div container -->
+        <div class="form-control" id="postal-code"></div>
+      </div>
+    </div>
+
+
+    <button value="submit" id="submit" class="btn btn-success btn-lg center-block">Pay with <span id="card-type">Card</span></button>
+  </form>
+
+<!-- Load the required client component. -->
+<script src="https://js.braintreegateway.com/web/3.40.0/js/client.min.js"></script>
+
+<!-- Load Hosted Fields component. -->
+<script src="https://js.braintreegateway.com/web/3.40.0/js/hosted-fields.min.js"></script>
+
 <script>
   var button = document.querySelector('#submit-button');
+  var form = document.getElementById('my-sample-form')
 
   {{!-- braintree.setup("sandbox_7smphwzv_ds7p8v5crrrkrygr", "custom", {
         id: "my-sample-form",
@@ -42,19 +95,19 @@
         }
       }); --}}
 //
-      braintree.client.create({
+    var clientInstance = braintree.client.create({
         authorization: 'sandbox_7smphwzv_ds7p8v5crrrkrygr'
       }, function (clientErr, clientInstance) {
         if (clientErr) {
           console.error(clientErr);
           return;
         }
-
+      })
         // This example shows Hosted Fields, but you can also use this
         // client instance to create additional components here, such as
         // PayPal or Data Collector.
 
-        braintree.hostedFields.create({
+       var hostedFieldsInstance = braintree.hostedFields.create({
           client: clientInstance,
           styles: {
             'input': {
@@ -81,14 +134,54 @@
               placeholder: '10/2019'
             }
           }
-        }, function (hostedFieldsErr, hostedFieldsInstance) {
+        }, function (options, hostedFieldsErr, hostedFieldsInstance) {
           if (hostedFieldsErr) {
             console.error(hostedFieldsErr);
             return;
-          }
+          } })
 
-          submit.removeAttribute('disabled');
 
+ var hostedFieldsInstance = braintree.hostedFields.create({
+    client: clientInstance,
+    styles: {
+      'input': {
+        'font-size': '14px',
+        'font-family': 'helvetica, tahoma, calibri, sans-serif',
+        'color': '#3a3a3a'
+      },
+      ':focus': {
+        'color': 'black'
+      }
+    },
+    fields: {
+      number: {
+        selector: '#card-number',
+        placeholder: '4111 1111 1111 1111'
+      },
+      cvv: {
+        selector: '#cvv',
+        placeholder: '123'
+      },
+      expirationMonth: {
+        selector: '#expiration-month',
+        placeholder: 'MM'
+      },
+      expirationYear: {
+        selector: '#expiration-year',
+        placeholder: 'YY'
+      },
+      postalCode: {
+        selector: '#postal-code',
+        placeholder: '90210'
+      }
+    }
+  }, function (options, err, hostedFieldsInstance) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+          //submit.removeAttribute('disabled');
           form.addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -102,18 +195,21 @@
               // send the nonce to your server.
               console.log('Got a nonce: ' + payload.nonce);
               res.send(payload.nonce)
+
+                document.querySelector('#nonce').value = payload.nonce;
+          form.submit();
             });
           }, false);
         });
-      });
+      {{!-- }); --}}
 
-  braintree.client.create({
+  {{!-- braintree.client.create({
     // Insert your tokenization key here
     authorization: 'sandbox_7smphwzv_ds7p8v5crrrkrygr',
    // container: '#dropin-container'
   }, function (createErr, instance) {
     button.addEventListener('click', function () {
-      instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+     // instance.requestPaymentMethod(function //(requestPaymentMethodErr, payload) {
         // When the user clicks on the 'Submit payment' button this code will send the
         // encrypted payment information in a variable called a payment method nonce
         $.ajax({
@@ -137,9 +233,9 @@
           } else {
             console.log(result);
             $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
-          }
-        });
+          } --}}
+        {{!-- });
       });
     });
-  });
+  }); --}}
 </script>

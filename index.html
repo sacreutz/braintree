@@ -51,7 +51,7 @@
         // client instance to create additional components here, such as
         // PayPal or Data Collector.
 
-        braintree.hostedFields.create({
+        var hostedFieldsInstance = braintree.hostedFields.create({
           client: clientInstance,
           styles: {
             'input': {
