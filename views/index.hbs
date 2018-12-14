@@ -1,74 +1,43 @@
-{{!-- <div id="dropin-wrapper">
-  <div id="checkout-message"></div>
-  <div id="dropin-container"></div>
-  <head>
-    <meta charset="UTF-8">
-    <title>Checkout</title>
-  </head>
-  <body>
-    <form action="/" id="my-sample-form" method="post">
-      <label for="card-number">Card Number</label>
-      <div id="card-number"></div>
+ <form id="my-sample-form" onSubmit={this.handleSubmit}>
+      <div className="input-group input-group-lg">
+         <label for="card-number">Card Number</label>
+        <input
+          className="form-control"
+          type="text"
+          name="card-number"
+          placeholder="4111111111111111"
 
-      <label for="cvv">CVV</label>
-      <div id="cvv"></div>
+        />
+         <label for="card-number">Expiration Date</label>
+         <input
+          className="form-control"
+          type="text"
+          name="expiration-date"
+          placeholder="09/18"
 
-      <label for="expiration-date">Expiration Date</label>
-      <div id="expiration-date"></div>
+        />
 
-      <input type="submit" value="Pay" disabled />
+        <label for="card-number">Security Code</label>
+         <input
+          className="form-control"
+          type="text"
+          name="cvv"
+          placeholder="123"
+
+        />
+           <label for="card-number">Zipcode</label>
+         <input
+          className="form-control"
+          type="text"
+          name="postal-code"
+          placeholder="60018"
+
+        />
+        <span className="input-group-btn">
+          <button className="btn btn-default" type="submit" id="submit-button">Pay</button>
+        </span>
+      </div>
     </form>
-
-    <script src="https://js.braintreegateway.com/web/3.39.0/js/client.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.39.0/js/hosted-fields.min.js"></script>
-
-  <button id="submit-button">Submit payment</button>
-</div> --}}
-
-
-<!-- Bootstrap inspired Braintree Hosted Fields example -->
-<div class="panel panel-default bootstrap-basic">
-  <div class="panel-heading">
-    <h3 class="panel-title">Enter Card Details</h3>
-  </div>
-  <form class="panel-body" id="my-sample-form">
-    <div class="row">
-      <div class="form-group col-sm-8">
-        <label class="control-label">Card Number</label>
-        <!--  Hosted Fields div container -->
-        <div class="form-control" id="card-number"></div>
-        <span class="helper-text"></span>
-      </div>
-      <div class="form-group col-sm-4">
-        <div class="row">
-          <label class="control-label col-xs-12">Expiration Date</label>
-          <div class="col-xs-6">
-            <!--  Hosted Fields div container -->
-            <div class="form-control" id="expiration-month"></div>
-          </div>
-          <div class="col-xs-6">
-            <!--  Hosted Fields div container -->
-            <div class="form-control" id="expiration-year"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-sm-6">
-        <label class="control-label">Security Code</label>
-        <!--  Hosted Fields div container -->
-        <div class="form-control" id="cvv"></div>
-      </div>
-      <div class="form-group col-sm-6">
-        <label class="control-label">Zipcode</label>
-        <!--  Hosted Fields div container -->
-        <div class="form-control" id="postal-code"></div>
-      </div>
-    </div>
-
-
-    <button value="submit" id="submit" class="btn btn-success btn-lg center-block">Pay with <span id="card-type">Card</span></button>
-  </form>
 
 <!-- Load the required client component. -->
 <script src="https://js.braintreegateway.com/web/3.40.0/js/client.min.js"></script>
@@ -77,24 +46,9 @@
 <script src="https://js.braintreegateway.com/web/3.40.0/js/hosted-fields.min.js"></script>
 
 <script>
-  var button = document.querySelector('#submit-button');
+  var button = document.getElementById('submit-button');
   var form = document.getElementById('my-sample-form')
 
-  {{!-- braintree.setup("sandbox_7smphwzv_ds7p8v5crrrkrygr", "custom", {
-        id: "my-sample-form",
-        hostedFields: {
-          number: {
-            selector: "#card-number"
-          },
-          cvv: {
-            selector: "#cvv"
-          },
-          expirationDate: {
-            selector: "#expiration-date"
-          }
-        }
-      }); --}}
-//
     var clientInstance = braintree.client.create({
         authorization: 'sandbox_7smphwzv_ds7p8v5crrrkrygr'
       }, function (clientErr, clientInstance) {
@@ -102,47 +56,13 @@
           console.error(clientErr);
           return;
         }
-      })
-        // This example shows Hosted Fields, but you can also use this
-        // client instance to create additional components here, such as
-        // PayPal or Data Collector.
-
-       var hostedFieldsInstance = braintree.hostedFields.create({
-          client: clientInstance,
-          styles: {
-            'input': {
-              'font-size': '14px'
-            },
-            'input.invalid': {
-              'color': 'red'
-            },
-            'input.valid': {
-              'color': 'green'
-            }
-          },
-          fields: {
-            number: {
-              selector: '#card-number',
-              placeholder: '4111 1111 1111 1111'
-            },
-            cvv: {
-              selector: '#cvv',
-              placeholder: '123'
-            },
-            expirationDate: {
-              selector: '#expiration-date',
-              placeholder: '10/2019'
-            }
-          }
-        }, function (options, hostedFieldsErr, hostedFieldsInstance) {
-          if (hostedFieldsErr) {
-            console.error(hostedFieldsErr);
-            return;
-          } })
+        var options = {
+          client: clientInstance
+        }
 
 
- var hostedFieldsInstance = braintree.hostedFields.create({
-    client: clientInstance,
+ var hostedFieldsInstance = braintree.hostedFields.create(options, {
+    client: options.client,
     styles: {
       'input': {
         'font-size': '14px',
@@ -181,18 +101,18 @@
       return;
     }
 
+      })
           //submit.removeAttribute('disabled');
           form.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+            {{!-- hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
               if (tokenizeErr) {
                 console.error(tokenizeErr);
                 return;
-              }
+              } --}}
 
-              // If this was a real integration, this is where you would
-              // send the nonce to your server.
+
               console.log('Got a nonce: ' + payload.nonce);
               res.send(payload.nonce)
 
@@ -200,42 +120,7 @@
           form.submit();
             });
           }, false);
-        });
-      {{!-- }); --}}
 
-  {{!-- braintree.client.create({
-    // Insert your tokenization key here
-    authorization: 'sandbox_7smphwzv_ds7p8v5crrrkrygr',
-   // container: '#dropin-container'
-  }, function (createErr, instance) {
-    button.addEventListener('click', function () {
-     // instance.requestPaymentMethod(function //(requestPaymentMethodErr, payload) {
-        // When the user clicks on the 'Submit payment' button this code will send the
-        // encrypted payment information in a variable called a payment method nonce
-        $.ajax({
-          type: 'POST',
-          url: '/checkout',
-          data: {'paymentMethodNonce': payload.nonce}
-        }).done(function(result) {
-          // Tear down the Drop-in UI
-          instance.teardown(function (teardownErr) {
-            if (teardownErr) {
-              console.error('Could not tear down Drop-in UI!');
-            } else {
-              console.info('Drop-in UI has been torn down!');
-              // Remove the 'Submit payment' button
-              $('#submit-button').remove();
-            }
-          });
 
-          if (result.success) {
-            $('#checkout-message').html('<h1>Success</h1><p>Your UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
-          } else {
-            console.log(result);
-            $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
-          } --}}
-        {{!-- });
-      });
-    });
-  }); --}}
+
 </script>

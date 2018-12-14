@@ -1,11 +1,8 @@
 const express = require('express')
 const router = express.Router()
-//const gateway = require('../lib/gateway')
 const flash = require('req-flash')
 const braintree = require('braintree')
 
-
-//not sure about this stuff yet but it does something:
 
 var TRANSACTION_SUCCESS_STATUSES = [
   braintree.Transaction.Status.Authorizing,
@@ -20,7 +17,7 @@ var TRANSACTION_SUCCESS_STATUSES = [
 function formatErrors(errors) {
   var formattedErrors = '';
 
-  for (var i in errors) { // eslint-disable-line no-inner-declarations, vars-on-top
+  for (var i in errors) {
     if (errors.hasOwnProperty(i)) {
       formattedErrors += 'Error: ' + errors[i].code + ': ' + errors[i].message + '\n';
     }
@@ -51,9 +48,7 @@ function createResultObject(transaction) {
 
 // and these are routes:
 
-// router.get('/', function (req, res) {
-//   res.redirect('checkouts/new')
-// })
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -68,8 +63,6 @@ router.get('/client_token', function (req, res) {
   });
   gateway.clientToken.generate({}, function (err, response) {
     var clientToken = response.clientToken
-    // res.render('/checkouts/new', {clientToken: response.clientToken, messages:
-    //   req.flash('error')});
     res.send(response.clientToken)
     if (err) {
       console.error(err)
@@ -86,7 +79,7 @@ router.post("/checkout", function (req, res) {
   });
 
   var nonceFromTheClient = req.body.paymentMethodNonce;
-  var transactionErrors //still need to create this
+  var transactionErrors
   var amount = req.body.amount;
   // Use payment method nonce here
   gateway.transaction.sale({

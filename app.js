@@ -8,13 +8,13 @@ const flash = require('connect-flash')
 //app.listen(port, () => console.log(`Listening on port ${port}!`))
 var indexRouter = require('./scripts/server/index')
 //app.use('/style', express.static(path.join(__dirname, '/style')))
-app.use('/scripts', express.static(path.join(__dirname, '/scripts')))
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use('/scripts', express.static(path.join(__dirname, '/scripts')))
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(flash())
 
 
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'hbs')
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
